@@ -4,6 +4,7 @@ import com.babelgroup.banco.models.Sucursal;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -24,8 +25,7 @@ public class SucursalServiceImpl implements SucursalService {
             sucursales.add(sucursal);
             return sucursal;
         }catch (Error e){
-            System.out.println("Error al crear la sucursal");
-            return null;
+            throw new IllegalArgumentException("Error al crear la sucursal");
         }
     }
 
@@ -41,8 +41,7 @@ public class SucursalServiceImpl implements SucursalService {
             sucursalActual.setDirector(sucursal.getDirector());
             return sucursalActual;
         }else{
-            System.out.println("No se encontro la sucursal");
-            return null;
+            throw new NoSuchElementException("No se encontro la sucursal");
         }
     }
 
@@ -54,7 +53,7 @@ public class SucursalServiceImpl implements SucursalService {
         if(sucursalOptional.isPresent()){
             sucursales.remove(sucursalOptional.get());
         }else{
-            System.out.println("No se encontro la sucursal");
+            throw new NoSuchElementException("No se encontro la sucursal");
         }
     }
 }
