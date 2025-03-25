@@ -38,11 +38,11 @@ public class Cuenta {
     public Cuenta() {
     }
 
-    public Cuenta(String numCuenta, Cliente cliente, Integer balance) {
+    public Cuenta(String numCuenta, Sucursal sucursal, Cliente cliente, Integer balance) {
         this.numCuenta = numCuenta;
+        this.sucursal = sucursal;
         this.cliente = cliente;
         this.balance = balance;
-        this.sucursal = cliente.getSucursal();
     }
 
 
