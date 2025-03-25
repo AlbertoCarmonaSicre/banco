@@ -11,10 +11,15 @@ import java.util.Optional;
 public class SucursalServiceImpl implements SucursalService {
 
     private static Integer contador = 0;
-    private static List<Sucursal> sucursales;
+    private static List<Sucursal> sucursales = List.of(
+            new Sucursal(contador++, "Sucursal 1", "Direccion 1", "Director 1"),
+            new Sucursal(contador++, "Sucursal 2", "Direccion 2", "Director 2"),
+            new Sucursal(contador++, "Sucursal 3", "Direccion 3", "Director 3")
+    );
 
     @Override
     public List<Sucursal> findAll() {
+        System.out.println(sucursales.toString());
         return sucursales;
     }
 

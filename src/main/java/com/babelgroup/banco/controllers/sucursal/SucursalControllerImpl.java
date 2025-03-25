@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 @Controller
-@RequestMapping("/sucursales")
+@RequestMapping("/api/sucursales")
 public class SucursalControllerImpl implements SucursalController{
 
     SucursalService sucursalService;
@@ -26,7 +26,7 @@ public class SucursalControllerImpl implements SucursalController{
     public String findAll(Model model) {
         List<Sucursal> sucursales = sucursalService.findAll();
         model.addAttribute("sucursales", sucursales);
-        return "sucursales";
+        return "index";
     }
 
     @Override
