@@ -5,14 +5,12 @@ import com.babelgroup.banco.models.Cliente;
 import com.babelgroup.banco.models.Cuenta;
 import com.babelgroup.banco.models.Sucursal;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Autowired
-public class ServiceCuenta {
+public class CuentaService {
     String numeroCuenta = String.format("%020d", 1); // 20 dígitos con ceros a la izquierda
     private List<Cuenta> cuentas = new ArrayList<>();
 
