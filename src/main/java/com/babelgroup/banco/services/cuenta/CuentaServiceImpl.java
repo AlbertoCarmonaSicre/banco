@@ -1,23 +1,28 @@
-package com.babelgroup.banco.services;
+package com.babelgroup.banco.services.cuenta;
 
 import com.babelgroup.banco.dto.CuentaDetalle;
 import com.babelgroup.banco.models.Cliente;
 import com.babelgroup.banco.models.Cuenta;
 import com.babelgroup.banco.models.Sucursal;
+import com.babelgroup.banco.services.cliente.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CuentaService {
+@Service
+public class CuentaServiceImpl {
     String numeroCuenta = String.format("%020d", 1); // 20 dígitos con ceros a la izquierda
     private List<Cuenta> cuentas = new ArrayList<>();
+
+    @Autowired
+    private ClienteService clienteService;
 
     public Cuenta cuentaAlta(Sucursal sucursal, Integer id, Integer balance) {
 
         //TODO comprobar que pilla getClientById (comprobar nomenclatura)
-        Cliente cliente = serviceCliente.getClientById(id);
+        Cliente cliente = clienteService.getClientById(id);
         // Validar que el cliente existe y pertenece a la sucursal
         if (cliente == null) {
             throw new IllegalArgumentException("Cliente no encontrado con ID: " + id);
@@ -30,6 +35,7 @@ public class CuentaService {
                 cliente,
                 balance
         );
+        cuentas.add(cuenta); // Añadir la cuenta a la lista
 
         // Incrementamos el numeroCuenta
         Long numeroAux = Long.parseLong(numeroCuenta);
@@ -41,7 +47,7 @@ public class CuentaService {
 
 
     public void cuentaModificar(String numeroCuenta, Sucursal sucursal, Integer id, Integer balance) {
-        Cliente cliente = serviceCliente.getClientById(id);
+        Cliente cliente = clienteService.getClientById(id);
 
 
         // Validar formato del número de cuenta (20 dígitos)
@@ -55,9 +61,8 @@ public class CuentaService {
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Cuenta no encontrada: " + numeroCuenta));
 
-        // Validar que la cuenta pertenece al cliente y sucursal indicados
 
-        // Actualizar el balance
+        // Actualizar los campos de la cuenta
         cuentaExistente.setNumCuenta(numeroCuenta);
         cuentaExistente.setSucursal(sucursal);
         cuentaExistente.setCliente(cliente);

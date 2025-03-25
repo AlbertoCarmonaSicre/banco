@@ -35,8 +35,6 @@ public class Cuenta {
         this.balance = balance;
     }
 
-    public Cuenta() {
-    }
 
     public Cuenta(String numCuenta, Sucursal sucursal, Cliente cliente, Integer balance) {
         this.numCuenta = numCuenta;
