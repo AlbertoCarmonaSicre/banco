@@ -1,5 +1,6 @@
 package com.babelgroup.banco.services.cuenta;
 
+import ch.qos.logback.core.net.server.Client;
 import com.babelgroup.banco.dto.CuentaDetalle;
 import com.babelgroup.banco.models.Cliente;
 import com.babelgroup.banco.models.Cuenta;
@@ -23,6 +24,7 @@ public class CuentaServiceImpl {
     public Cuenta cuentaAlta(Sucursal sucursal, Integer id, Integer balance) {
 
         //TODO comprobar que pilla getClientById (comprobar nomenclatura)
+
         Cliente cliente = clienteService.getClientById(id).orElse(null);
         // Validar que el cliente existe y pertenece a la sucursal
         if (cliente == null) {
@@ -53,6 +55,7 @@ public class CuentaServiceImpl {
         if (cliente == null) {
             throw new IllegalArgumentException("Cliente no encontrado con ID: " + id);
         }
+
 
         // Validar formato del número de cuenta (20 dígitos)
         if (numeroCuenta == null || !numeroCuenta.matches("\\d{20}")) {
