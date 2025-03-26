@@ -50,7 +50,7 @@ public class CuentaServiceImpl {
 
 
     public void cuentaModificar(String numeroCuenta, Sucursal sucursal, Integer id, Integer balance) {
-        Optional<Client> cliente = clienteService.getClientById(id);
+        Optional<Cliente> cliente = clienteService.getClientById(id);
 
 
 
