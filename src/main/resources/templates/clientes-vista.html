@@ -2,16 +2,97 @@
 <html lang="es" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Listado de Clientes</title>
+    <title>Gestión de Clientes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background-color: #f7f7f7;
+            color: #333;
+        }
+
+        h2, h3 {
+            color: #004080;
+        }
+
+        p {
+            margin: 10px 0;
+        }
+
+        .notification {
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #e0ffe0;
+            border: 1px solid #66cc66;
+            margin-bottom: 20px;
+        }
+
+        .error {
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #ffe0e0;
+            border: 1px solid #cc6666;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        th, td {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+
+        th {
+            background-color: #004080;
+            color: white;
+        }
+
+        form {
+            background-color: white;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            margin-bottom: 25px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="number"] {
+            padding: 6px;
+            margin: 5px 0;
+            width: 250px;
+            display: block;
+        }
+
+        button {
+            padding: 8px 16px;
+            background-color: #004080;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #003060;
+        }
+    </style>
 </head>
 <body>
 
 <!-- Notificación -->
-<p th:text="|${notificacion}|"></p>
+<p class="notification" th:if="${notificacion != null}" th:text="${notificacion}"></p>
+<p class="error" th:if="${error != null}" th:text="${error}"></p>
 
 <!-- Listado de clientes -->
 <h2>Clientes registrados</h2>
-<table border="1">
+<table>
     <thead>
     <tr>
         <th>ID</th>
@@ -36,36 +117,30 @@
     </tbody>
 </table>
 
-<br><br>
-
 <!-- Formulario: Crear cliente -->
 <h3>Crear nuevo cliente</h3>
 <form action="/clientes" method="post">
-    <input type="text" name="DNI" placeholder="DNI" required />
-    <input type="text" name="nombre" placeholder="Nombre" required />
+    <input type="text" name="DNI" placeholder="DNI" pattern="^[0-9]{8}[A-Za-z]$" title="Formato válido: 12345678A" required />
+    <input type="text" name="nombre" placeholder="Nombre" maxlength="50" required />
     <input type="text" name="direccionPostal" placeholder="Dirección" />
     <input type="email" name="email" placeholder="Email" />
-    <input type="text" name="telefono" placeholder="Teléfono" />
+    <input type="text" name="telefono" placeholder="Teléfono" pattern="^[0-9]{9}$" title="Debe tener 9 dígitos numéricos" required />
     <input type="text" name="sucursal" placeholder="Sucursal" />
     <button type="submit">Crear</button>
 </form>
-
-<br><br>
 
 <!-- Formulario: Actualizar cliente -->
 <h3>Actualizar cliente</h3>
 <form action="/clientes/actualizar" method="post">
     <input type="number" name="id" placeholder="ID del cliente" required />
-    <input type="text" name="DNI" placeholder="DNI" required />
-    <input type="text" name="nombre" placeholder="Nombre" required />
+    <input type="text" name="DNI" placeholder="DNI" pattern="^[0-9]{8}[A-Za-z]$" title="Formato válido: 12345678A" required />
+    <input type="text" name="nombre" placeholder="Nombre" maxlength="50" required />
     <input type="text" name="direccionPostal" placeholder="Dirección" />
     <input type="email" name="email" placeholder="Email" />
-    <input type="text" name="telefono" placeholder="Teléfono" />
+    <input type="text" name="telefono" placeholder="Teléfono" pattern="^[0-9]{9}$" title="Debe tener 9 dígitos numéricos" required />
     <input type="text" name="sucursal" placeholder="Sucursal" />
     <button type="submit">Actualizar</button>
 </form>
-
-<br><br>
 
 <!-- Formulario: Eliminar cliente -->
 <h3>Eliminar cliente</h3>
@@ -73,8 +148,6 @@
     <input type="number" name="id" placeholder="ID del cliente a eliminar" required />
     <button type="submit">Eliminar</button>
 </form>
-
-<br><br>
 
 <!-- Formulario: Buscar cliente -->
 <h3>Buscar cliente</h3>
@@ -88,12 +161,14 @@
 <!-- Mostrar cliente encontrado -->
 <div th:if="${clienteBuscado != null}">
     <h3>Cliente encontrado:</h3>
-    <p th:text="'ID: ' + ${clienteBuscado.id}"></p>
-    <p th:text="'Nombre: ' + ${clienteBuscado.nombre}"></p>
-    <p th:text="'DNI: ' + ${clienteBuscado.DNI}"></p>
+    <p><strong>ID:</strong> <span th:text="${clienteBuscado.id}"></span></p>
+    <p><strong>Nombre:</strong> <span th:text="${clienteBuscado.nombre}"></span></p>
+    <p><strong>DNI:</strong> <span th:text="${clienteBuscado.DNI}"></span></p>
+    <p><strong>Dirección postal:</strong> <span th:text="${clienteBuscado.direccionPostal}"></span></p>
+    <p><strong>Email:</strong> <span th:text="${clienteBuscado.email}"></span></p>
+    <p><strong>Teléfono:</strong> <span th:text="${clienteBuscado.telefono}"></span></p>
+    <p><strong>Sucursal:</strong> <span th:text="${clienteBuscado.sucursal.name}"></span></p>
 </div>
-
-<p th:if="${error != null}" th:text="${error}"></p>
 
 </body>
 </html>

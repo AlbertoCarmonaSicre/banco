@@ -13,7 +13,7 @@ public interface ClienteController {
             @RequestParam String direccionPostal,
             @RequestParam String email,
             @RequestParam String telefono,
-            @RequestParam Sucursal sucursal,
+            @RequestParam String sucursal,
             Model model
     );
 
@@ -24,7 +24,7 @@ public interface ClienteController {
             @RequestParam String direccionPostal,
             @RequestParam String email,
             @RequestParam String telefono,
-            @RequestParam Sucursal sucursal,
+            @RequestParam String sucursal,
             Model model
     );
 
