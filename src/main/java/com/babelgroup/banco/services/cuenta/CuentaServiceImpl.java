@@ -1,24 +1,25 @@
 package com.babelgroup.banco.services.cuenta;
 
-import ch.qos.logback.core.net.server.Client;
 import com.babelgroup.banco.dto.CuentaDetalle;
 import com.babelgroup.banco.models.Cliente;
 import com.babelgroup.banco.models.Cuenta;
 import com.babelgroup.banco.models.Sucursal;
 import com.babelgroup.banco.services.cliente.ClienteService;
+import com.babelgroup.banco.services.sucursal.SucursalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
-
-import com.babelgroup.banco.services.sucursal.SucursalService;
 
 @Service
 public class CuentaServiceImpl {
     @Autowired
     private SucursalService sucursalService;
+
+    @Autowired
+    private ClienteService clienteService;
 
     String numeroCuenta = String.format("%020d", 1); // 20 dígitos con ceros a la izquierda
 
@@ -37,15 +38,12 @@ public class CuentaServiceImpl {
     }
     */
 
-    @Autowired
-    private ClienteService clienteService;
-
     public Cuenta cuentaAlta(Sucursal sucursal, Integer id, Integer balance) {
 
         //TODO comprobar que pilla getClientById (comprobar nomenclatura)
 
         Cliente cliente = clienteService.getClientById(id).orElse(null);
-        // Validar que el cliente existe y pertenece a la sucursal
+        // Validar que el cliente existe
         if (cliente == null) {
             throw new IllegalArgumentException("Cliente no encontrado con ID: " + id);
         }
@@ -95,19 +93,23 @@ public class CuentaServiceImpl {
         cuentaExistente.setBalance(balance);
     }
 
+    public List<Cuenta> listarCuentas() {
+
+        return cuentas.stream().collect(Collectors.toList());
+    }
     public List<Cuenta> cuentaListarPorClientes(Cliente cliente) {
 
         return cuentas.stream()
-                .filter(cuenta -> cuenta.getCliente().get().getId().equals(cliente.getId()))
+                .filter(cuenta -> cuenta.getCliente().getId().equals(cliente.getId()))
                 .collect(Collectors.toList());
     }
 
-    public List<Cuenta> cuentaListarPorSucursal(Sucursal sucursal) {
-
-        return cuentas.stream()
-                .filter(cuenta -> cuenta.getSucursal().getId().equals(sucursal.getId()))
-                .collect(Collectors.toList());
-    }
+//    public List<Cuenta> cuentaListarPorSucursal(Sucursal sucursal) {
+//
+//        return cuentas.stream()
+//                .filter(cuenta -> cuenta.getSucursal().getId().equals(sucursal.getId()))
+//                .collect(Collectors.toList());
+//    }
 
     public void cuentaBorrar(String numeroCuenta) {
         // Validar formato del número de cuenta (20 dígitos)

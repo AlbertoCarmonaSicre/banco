@@ -1,23 +1,16 @@
 package com.babelgroup.banco.controllers.cuenta;
 
-import com.babelgroup.banco.dto.CuentaDetalle;
+
 import com.babelgroup.banco.models.Cuenta;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.ui.Model;
 
 public interface CuentaController {
 
-    @PostMapping
-    ResponseEntity<Cuenta> altaCuenta(@RequestBody Cuenta cuenta);
+    String altaCuenta(Model model, Cuenta cuenta);
 
-    @PutMapping("/{numeroCuenta}")
-    ResponseEntity<Void> modificarCuenta(
-            @PathVariable String numeroCuenta,
-            @RequestBody Cuenta cuenta);
+    String modificarCuenta(Model model, String numeroCuenta, Cuenta cuenta);
 
-    @DeleteMapping("/{numeroCuenta}")
-    ResponseEntity<Void> borrarCuenta(@PathVariable String numeroCuenta);
+    String borrarCuenta(Model model,String numeroCuenta);
 
-    @GetMapping("/{numeroCuenta}")
-    ResponseEntity<CuentaDetalle> detalleCuenta(@PathVariable String numeroCuenta);
+    String detalleCuenta(Model model,String numeroCuenta);
 }

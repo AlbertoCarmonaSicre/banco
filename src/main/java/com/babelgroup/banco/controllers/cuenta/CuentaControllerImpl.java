@@ -1,67 +1,82 @@
 package com.babelgroup.banco.controllers.cuenta;
 
-import com.babelgroup.banco.dto.CuentaDetalle;
-import com.babelgroup.banco.models.Cliente;
 import com.babelgroup.banco.models.Cuenta;
-import com.babelgroup.banco.models.Sucursal;
 import com.babelgroup.banco.services.cuenta.CuentaServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
-
-@RestController
-@RequestMapping("/api/cuentas")
+@Controller
+@RequestMapping("/cuentas")
 public class CuentaControllerImpl implements CuentaController {
 
     @Autowired
-    private CuentaServiceImpl cuentaServiceImpl;
+    private CuentaServiceImpl cuentaService;
 
-    @PostMapping
-    public ResponseEntity<Cuenta> altaCuenta(@RequestBody Cuenta cuenta) {
-        return ResponseEntity.ok(cuentaServiceImpl.cuentaAlta(
-                cuenta.getSucursal(),
-                cuenta.getCliente().get().getId(),
-                cuenta.getBalance()
-        ));
+    @GetMapping
+    public String listarCuentas(Model model) {
+        model.addAttribute("cuentas", cuentaService.listarCuentas());
+        return "cuentas-vista";
     }
 
-    @PutMapping("/{numeroCuenta}")
-    public ResponseEntity<Void> modificarCuenta(
-            @PathVariable String numeroCuenta,
-            @RequestBody Cuenta cuenta) {
-        cuentaServiceImpl.cuentaModificar(
-                numeroCuenta,
-                cuenta.getSucursal(),
-                cuenta.getCliente().get().getId(),
-                cuenta.getBalance()
-        );
-        return ResponseEntity.ok().build();
+    @Override
+    @PostMapping("/alta")
+    public String altaCuenta(Model model, Cuenta cuenta) {
+        try {
+            Cuenta nuevaCuenta = cuentaService.cuentaAlta(
+                    cuenta.getSucursal(),
+                    cuenta.getCliente().getId(),
+                    cuenta.getBalance()
+            );
+            model.addAttribute("notificacion", "Cuenta creada: " + nuevaCuenta.getNumCuenta());
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("error", e.getMessage());
+        }
+        return "redirect:/cuentas";
     }
 
-    @DeleteMapping("/{numeroCuenta}")
-    public ResponseEntity<Void> borrarCuenta(@PathVariable String numeroCuenta) {
-        cuentaServiceImpl.cuentaBorrar(numeroCuenta);
-        return ResponseEntity.ok().build();
+    @Override
+    @PostMapping("/modificar/{numeroCuenta}")
+    public String modificarCuenta(Model model, @PathVariable String numeroCuenta, Cuenta cuenta) {
+        try {
+            cuentaService.cuentaModificar(
+                    numeroCuenta,
+                    cuenta.getSucursal(),
+                    cuenta.getCliente().getId(),
+                    cuenta.getBalance()
+            );
+            model.addAttribute("notificacion", "Cuenta modificada correctamente");
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("error", e.getMessage());
+        }
+        return "redirect:/cuentas";
     }
 
+    @Override
+    @PostMapping("/borrar/{numeroCuenta}")
+    public String borrarCuenta(Model model, @PathVariable String numeroCuenta) {
+        try {
+            cuentaService.cuentaBorrar(numeroCuenta);
+            model.addAttribute("notificacion", "Cuenta eliminada correctamente");
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("error", e.getMessage());
+        }
+        return "redirect:/cuentas";
+    }
+
+    @Override
     @GetMapping("/{numeroCuenta}")
-    public ResponseEntity<CuentaDetalle> detalleCuenta(@PathVariable String numeroCuenta) {
-        return ResponseEntity.ok(cuentaServiceImpl.cuentaDetalle(numeroCuenta));
+    public String detalleCuenta(Model model, @PathVariable String numeroCuenta) {
+        try {
+            model.addAttribute("cuenta", cuentaService.cuentaDetalle(numeroCuenta));
+            return "cuenta-detalle";
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("error", e.getMessage());
+            return "redirect:/cuentas";
+        }
     }
-    @GetMapping("/cliente/{clienteId}")
-    public ResponseEntity<List<Cuenta>> listarCuentasPorCliente(@PathVariable Integer clienteId) {
-        Cliente cliente = new Cliente();
-        cliente.setId(clienteId);
-        return ResponseEntity.ok(cuentaServiceImpl.cuentaListarPorClientes(cliente));
-    }
-
-    @GetMapping("/sucursal/{sucursalId}")
-    public ResponseEntity<List<Cuenta>> listarCuentasPorSucursal(@PathVariable Integer sucursalId) {
-        Sucursal sucursal = new Sucursal("Sucursal 1", "Direccion 1", "Director 1");
-        sucursal.setId(sucursalId);
-        return ResponseEntity.ok(cuentaServiceImpl.cuentaListarPorSucursal(sucursal));
-    }
-
 }
