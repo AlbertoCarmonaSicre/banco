@@ -73,7 +73,7 @@ public class CuentaServiceImpl {
     public List<Cuenta> cuentaListarPorClientes(Cliente cliente) {
 
         return cuentas.stream()
-                .filter(cuenta -> cuenta.getCliente().getId().equals(cliente.getId()))
+                .filter(cuenta -> cuenta.getCliente().get().getId().equals(cliente.getId()))
                 .collect(Collectors.toList());
     }
 

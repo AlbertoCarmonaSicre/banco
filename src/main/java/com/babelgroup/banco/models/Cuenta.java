@@ -6,7 +6,7 @@ public class Cuenta {
 
     private String numCuenta;
     private Sucursal sucursal;
-    private Cliente cliente;
+    private Optional<Cliente> cliente;
     private Integer balance;
 
     public String getNumCuenta() {
@@ -25,7 +25,7 @@ public class Cuenta {
         this.sucursal = sucursal;
     }
 
-    public Cliente getCliente() {
+    public Optional<Cliente> getCliente() {
         return cliente;
     }
 

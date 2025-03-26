@@ -22,7 +22,7 @@ public class CuentaControllerImpl implements CuentaController {
     public ResponseEntity<Cuenta> altaCuenta(@RequestBody Cuenta cuenta) {
         return ResponseEntity.ok(cuentaServiceImpl.cuentaAlta(
                 cuenta.getSucursal(),
-                cuenta.getCliente().getId(),
+                cuenta.getCliente().get().getId(),
                 cuenta.getBalance()
         ));
     }
@@ -34,7 +34,7 @@ public class CuentaControllerImpl implements CuentaController {
         cuentaServiceImpl.cuentaModificar(
                 numeroCuenta,
                 cuenta.getSucursal(),
-                cuenta.getCliente().getId(),
+                cuenta.getCliente().get().getId(),
                 cuenta.getBalance()
         );
         return ResponseEntity.ok().build();
