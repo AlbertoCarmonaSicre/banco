@@ -41,7 +41,7 @@ public class Cuenta {
     public Cuenta(String numCuenta, Sucursal sucursal, Cliente cliente, Integer balance) {
         this.numCuenta = numCuenta;
         this.sucursal = sucursal;
-        this.cliente = cliente.get();
+        this.cliente = cliente;
         this.balance = balance;
     }
 
