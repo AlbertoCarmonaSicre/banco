@@ -24,6 +24,16 @@ public class SucursalServiceImpl implements SucursalService {
     }
 
     @Override
+    public Optional<Sucursal> findSucursalByName(String name) {
+        Sucursal sucursal = sucursales.stream().filter(s -> name.equals(s.getNombre())).findFirst().orElse(null);
+        if (sucursal == null){
+            return Optional.empty();
+        }
+        return Optional.of(sucursal);
+    }
+
+
+    @Override
     public Sucursal create(String nombre, String direccion, String director) {
         Sucursal sucursal = new Sucursal(contador++, nombre, direccion, director);
         try{
