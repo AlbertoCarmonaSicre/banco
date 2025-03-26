@@ -59,7 +59,7 @@ public class CuentaControllerImpl implements CuentaController {
 
     @GetMapping("/sucursal/{sucursalId}")
     public ResponseEntity<List<Cuenta>> listarCuentasPorSucursal(@PathVariable Integer sucursalId) {
-        Sucursal sucursal = new Sucursal();
+        Sucursal sucursal = new Sucursal("Sucursal 1", "Direccion 1", "Director 1");
         sucursal.setId(sucursalId);
         return ResponseEntity.ok(cuentaServiceImpl.cuentaListarPorSucursal(sucursal));
     }

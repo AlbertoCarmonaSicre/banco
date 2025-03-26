@@ -3,6 +3,7 @@ package com.babelgroup.banco.services.sucursal;
 import com.babelgroup.banco.models.Sucursal;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -11,15 +12,11 @@ import java.util.Optional;
 public class SucursalServiceImpl implements SucursalService {
 
     private static Integer contador = 0;
-    private static List<Sucursal> sucursales = List.of(
-            new Sucursal(contador++, "Sucursal 1", "Direccion 1", "Director 1"),
-            new Sucursal(contador++, "Sucursal 2", "Direccion 2", "Director 2"),
-            new Sucursal(contador++, "Sucursal 3", "Direccion 3", "Director 3")
-    );
+    private static List<Sucursal> sucursales = new ArrayList<>();
+
 
     @Override
     public List<Sucursal> findAll() {
-        System.out.println(sucursales.toString());
         return sucursales;
     }
 
@@ -60,5 +57,13 @@ public class SucursalServiceImpl implements SucursalService {
         }else{
             throw new NoSuchElementException("No se encontro la sucursal");
         }
+    }
+
+    @Override
+    public Sucursal findById(Integer id) {
+        return sucursales.stream()
+                .filter(s -> s.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("No se encontró la sucursal"));
     }
 }
