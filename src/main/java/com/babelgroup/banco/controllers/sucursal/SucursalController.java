@@ -12,4 +12,6 @@ public interface SucursalController {
 
     public String delete(Integer id, Model model);
 
+    public String findById(Integer id, Model model);
+
 }
