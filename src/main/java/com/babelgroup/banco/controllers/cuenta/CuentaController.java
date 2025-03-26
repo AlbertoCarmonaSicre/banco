@@ -13,4 +13,5 @@ public interface CuentaController {
     String borrarCuenta(Model model,String numeroCuenta);
 
     String detalleCuenta(Model model,String numeroCuenta);
+
 }

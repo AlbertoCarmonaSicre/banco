@@ -25,22 +25,7 @@ public class CuentaServiceImpl {
 
     private static List<Cuenta> cuentas = new ArrayList<>();  // Inicialmente vacía
 
-    /** Prueba  metiendo una cuenta en la lista
-
-    private void init() {
-        List<Sucursal> sucursales = sucursalService.findAll();
-        cuentas.add(new Cuenta("00000000000000000001",
-                sucursales.get(0),
-                Optional.of(new Cliente(1,"12345678A","Paco","Falsa 123, Mairena",
-                        "pacoelflaco@gmail.com", "666123123",
-                        sucursales.get(0))),
-                1000));
-    }
-    */
-
     public Cuenta cuentaAlta(Integer sucursalId, Integer clienteId, Integer balance) {
-
-        //TODO comprobar que pilla getClientById (comprobar nomenclatura)
 
         // Obtener la sucursal por ID
         Sucursal sucursal = sucursalService.findById(sucursalId);
@@ -128,18 +113,33 @@ public class CuentaServiceImpl {
     }
 
     public CuentaDetalle cuentaDetalle(String numeroCuenta) {
-        // Validar formato del número de cuenta (20 dígitos)
         if (numeroCuenta == null || !numeroCuenta.matches("\\d{20}")) {
             throw new IllegalArgumentException("El número de cuenta debe tener exactamente 20 dígitos");
         }
 
-        // Buscar la cuenta
         Cuenta cuenta = cuentas.stream()
                 .filter(c -> c.getNumCuenta().equals(numeroCuenta))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Cuenta no encontrada: " + numeroCuenta));
 
-        // Devolver solo número de cuenta y balance
-        return new CuentaDetalle(cuenta.getNumCuenta(), cuenta.getBalance());
+        return new CuentaDetalle(
+                cuenta.getNumCuenta(),
+                cuenta.getSucursal().getNombre(),
+                cuenta.getCliente().getNombre(),
+                cuenta.getBalance()
+        );
+    }
+
+    public void actualizarBalance(String numeroCuenta, Integer balance) {
+        if (numeroCuenta == null || !numeroCuenta.matches("\\d{20}")) {
+            throw new IllegalArgumentException("El número de cuenta debe tener exactamente 20 dígitos");
+        }
+
+        Cuenta cuenta = cuentas.stream()
+                .filter(c -> c.getNumCuenta().equals(numeroCuenta))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Cuenta no encontrada: " + numeroCuenta));
+
+        cuenta.setBalance(balance);
     }
 }

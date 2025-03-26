@@ -20,18 +20,26 @@
         <div class="col-md-6">
           <dl class="row">
             <dt class="col-sm-4">Número de Cuenta:</dt>
-            <dd class="col-sm-8" th:text="${cuenta.numCuenta}"></dd>
+            <dd class="col-sm-8" th:text="${cuenta.numeroCuenta}"></dd>
 
             <dt class="col-sm-4">Balance:</dt>
             <dd class="col-sm-8" th:text="${cuenta.balance} + ' €'"></dd>
           </dl>
 
           <!-- Formulario para modificar balance -->
-          <form th:action="@{/cuentas/modificar/{num}(num=${cuenta.numCuenta})}" method="post" class="mt-4">
+          <form th:action="@{/cuentas/modificar/{num}(num=${cuenta.numeroCuenta})}" method="post" class="mt-4">
+            <!-- Solo mantener el número de cuenta -->
+            <input type="hidden" name="numCuenta" th:value="${cuenta.numeroCuenta}">
             <div class="mb-3">
               <label for="balance" class="form-label">Nuevo Balance</label>
-              <input type="number" class="form-control" id="balance" name="balance"
-                     th:value="${cuenta.balance}" required>
+              <input type="text"
+                     class="form-control"
+                     id="balance"
+                     name="balance"
+                     pattern="[0-9]*"
+                     inputmode="numeric"
+                     th:value="${cuenta.balance}"
+                     required>
             </div>
             <button type="submit" class="btn btn-primary">Actualizar Balance</button>
           </form>

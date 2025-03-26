@@ -1,5 +1,6 @@
 package com.babelgroup.banco.controllers.cuenta;
 
+import com.babelgroup.banco.dto.CuentaDetalle;
 import com.babelgroup.banco.models.Cuenta;
 import com.babelgroup.banco.services.cuenta.CuentaServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,27 +41,27 @@ public class CuentaControllerImpl implements CuentaController {
     }
 
     @Override
-    @PostMapping("/modificar/{numeroCuenta}")
-    public String modificarCuenta(Model model, @PathVariable String numeroCuenta, Cuenta cuenta) {
+    @PostMapping("/modificar/{num}")
+    public String modificarCuenta(Model model, @PathVariable("num") String num, Cuenta cuenta) {
         try {
-            cuentaService.cuentaModificar(
-                    numeroCuenta,
-                    cuenta.getSucursal(),
-                    cuenta.getCliente().getId(),
-                    cuenta.getBalance()
-            );
-            model.addAttribute("notificacion", "Cuenta modificada correctamente");
+            // Obtener la cuenta existente primero
+            CuentaDetalle cuentaExistente = cuentaService.cuentaDetalle(num);
+
+            // Actualizar solo el balance
+            cuentaService.actualizarBalance(num, cuenta.getBalance());
+
+            return "redirect:/cuentas";
         } catch (IllegalArgumentException e) {
             model.addAttribute("error", e.getMessage());
+            return "redirect:/cuentas";
         }
-        return "redirect:/cuentas";
     }
 
     @Override
-    @PostMapping("/borrar/{numeroCuenta}")
-    public String borrarCuenta(Model model, @PathVariable String numeroCuenta) {
+    @PostMapping("/borrar/{num}")
+    public String borrarCuenta(Model model, @PathVariable("num") String num) {
         try {
-            cuentaService.cuentaBorrar(numeroCuenta);
+            cuentaService.cuentaBorrar(num);
             model.addAttribute("notificacion", "Cuenta eliminada correctamente");
         } catch (IllegalArgumentException e) {
             model.addAttribute("error", e.getMessage());
@@ -68,12 +69,12 @@ public class CuentaControllerImpl implements CuentaController {
         return "redirect:/cuentas";
     }
 
-    @Override
-    @GetMapping("/{numeroCuenta}")
-    public String detalleCuenta(Model model, @PathVariable String numeroCuenta) {
+    @GetMapping("/detalle/{numCuenta}")
+    public String detalleCuenta(Model model, @PathVariable String numCuenta) {
         try {
-            model.addAttribute("cuenta", cuentaService.cuentaDetalle(numeroCuenta));
-            return "cuenta-detalle";
+            CuentaDetalle cuenta = cuentaService.cuentaDetalle(numCuenta);
+            model.addAttribute("cuenta", cuenta);
+            return "cuenta-detalle"; // Cambiado de cuentas-detalle a cuenta-detalle
         } catch (IllegalArgumentException e) {
             model.addAttribute("error", e.getMessage());
             return "redirect:/cuentas";
