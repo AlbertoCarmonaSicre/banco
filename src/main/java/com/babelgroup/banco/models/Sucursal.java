@@ -46,7 +46,7 @@ public class Sucursal {
         this.director = director;
     }
 
-    public Sucursal(){}
+    public Sucursal(String s, String string, String s1){}
 
     @Override
     public String toString() {

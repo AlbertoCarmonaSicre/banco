@@ -22,7 +22,7 @@ public class CuentaServiceImpl {
     public Cuenta cuentaAlta(Sucursal sucursal, Integer id, Integer balance) {
 
         //TODO comprobar que pilla getClientById (comprobar nomenclatura)
-        Cliente cliente = clienteService.getClientById(id);
+        Cliente cliente = clienteService.getClientById(id).get();
         // Validar que el cliente existe y pertenece a la sucursal
         if (cliente == null) {
             throw new IllegalArgumentException("Cliente no encontrado con ID: " + id);
@@ -47,7 +47,7 @@ public class CuentaServiceImpl {
 
 
     public void cuentaModificar(String numeroCuenta, Sucursal sucursal, Integer id, Integer balance) {
-        Cliente cliente = clienteService.getClientById(id);
+        Cliente cliente = clienteService.getClientById(id).get();
 
 
         // Validar formato del número de cuenta (20 dígitos)

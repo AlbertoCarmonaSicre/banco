@@ -4,10 +4,7 @@ import com.babelgroup.banco.models.Sucursal;
 import com.babelgroup.banco.services.sucursal.SucursalService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,28 +23,34 @@ public class SucursalControllerImpl implements SucursalController{
     public String findAll(Model model) {
         List<Sucursal> sucursales = sucursalService.findAll();
         model.addAttribute("sucursales", sucursales);
-        return "index";
+        return "sucursales";
     }
 
     @Override
     @PostMapping("")
     public String create(String nombre, String direccion, String director, Model model) {
-        Sucursal sucursal = sucursalService.create(nombre, direccion, director);
-        model.addAttribute("sucursal", sucursal);
+        sucursalService.create(nombre, direccion, director);
+        List<Sucursal> sucursales = sucursalService.findAll();
+        model.addAttribute("sucursales", sucursales);
         return "sucursales";
     }
 
     @Override
-    @PutMapping("")
-    public String update(Integer id, String nombre, String direccion, String director, Model model) {
+    @PutMapping("/{id}")
+    public String update(@PathVariable Integer id, String nombre, String direccion, String director, Model model) {
         Sucursal sucursal = sucursalService.update(new Sucursal(id, nombre, direccion, director));
+        List<Sucursal> sucursales = sucursalService.findAll();
+        model.addAttribute("sucursales", sucursales);
         model.addAttribute("sucursal", sucursal);
         return "sucursales";
     }
 
     @Override
-    public String delete(Integer id, Model model) {
+    @PostMapping("/{id}/delete")
+    public String delete(@PathVariable Integer id, Model model) {
         sucursalService.delete(id);
+        List<Sucursal> sucursales = sucursalService.findAll();
+        model.addAttribute("sucursales", sucursales);
         return "sucursales";
     }
 }
