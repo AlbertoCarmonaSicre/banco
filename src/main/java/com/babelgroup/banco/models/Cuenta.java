@@ -2,16 +2,16 @@ package com.babelgroup.banco.models;
 
 public class Cuenta {
 
-    private Integer numCuenta;
+    private String numCuenta;
     private Sucursal sucursal;
     private Cliente cliente;
     private Integer balance;
 
-    public Integer getNumCuenta() {
+    public String getNumCuenta() {
         return numCuenta;
     }
 
-    public void setNumCuenta(Integer numCuenta) {
+    public void setNumCuenta(String numCuenta) {
         this.numCuenta = numCuenta;
     }
 
@@ -35,15 +35,16 @@ public class Cuenta {
         this.balance = balance;
     }
 
-    public Cuenta() {
-    }
 
-    public Cuenta(Integer numCuenta, Cliente cliente, Integer balance) {
+    public Cuenta(String numCuenta, Sucursal sucursal, Cliente cliente, Integer balance) {
         this.numCuenta = numCuenta;
+        this.sucursal = sucursal;
         this.cliente = cliente;
         this.balance = balance;
-        this.sucursal = cliente.getSucursal();
     }
 
 
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
 }
