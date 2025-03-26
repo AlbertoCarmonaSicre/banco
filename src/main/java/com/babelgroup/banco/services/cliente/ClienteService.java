@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ClienteService {
-    void create(String DNI, String nombre, String direccionPostal, String email, String telefono, Sucursal sucursal);
+    void create(String DNI, String nombre, String direccionPostal, String email, String telefono, String sucursal);
     List<Cliente> getAllClients();
-    void update(Integer id, String DNI, String nombre, String direccionPostal, String email, String telefono, Sucursal sucursal);
+    void update(Integer id, String DNI, String nombre, String direccionPostal, String email, String telefono, String sucursal);
     void delete(Integer id);
 
     Optional<Cliente> getClientById(Integer id);
