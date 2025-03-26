@@ -12,10 +12,29 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.babelgroup.banco.services.sucursal.SucursalService;
+
 @Service
 public class CuentaServiceImpl {
+    @Autowired
+    private SucursalService sucursalService;
+
     String numeroCuenta = String.format("%020d", 1); // 20 dígitos con ceros a la izquierda
-    private List<Cuenta> cuentas = new ArrayList<>();
+
+    private static List<Cuenta> cuentas = new ArrayList<>();  // Inicialmente vacía
+
+    /** Prueba  metiendo una cuenta en la lista
+
+    private void init() {
+        List<Sucursal> sucursales = sucursalService.findAll();
+        cuentas.add(new Cuenta("00000000000000000001",
+                sucursales.get(0),
+                Optional.of(new Cliente(1,"12345678A","Paco","Falsa 123, Mairena",
+                        "pacoelflaco@gmail.com", "666123123",
+                        sucursales.get(0))),
+                1000));
+    }
+    */
 
     @Autowired
     private ClienteService clienteService;
