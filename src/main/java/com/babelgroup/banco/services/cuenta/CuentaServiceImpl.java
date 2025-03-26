@@ -1,5 +1,6 @@
 package com.babelgroup.banco.services.cuenta;
 
+import ch.qos.logback.core.net.server.Client;
 import com.babelgroup.banco.dto.CuentaDetalle;
 import com.babelgroup.banco.models.Cliente;
 import com.babelgroup.banco.models.Cuenta;
@@ -23,7 +24,7 @@ public class CuentaServiceImpl {
     public Cuenta cuentaAlta(Sucursal sucursal, Integer id, Integer balance) {
 
         //TODO comprobar que pilla getClientById (comprobar nomenclatura)
-        Cliente cliente = clienteService.getClientById(id).get();
+        Optional<Cliente> cliente = clienteService.getClientById(id);
 
         // Validar que el cliente existe y pertenece a la sucursal
         if (cliente.isEmpty()) {
@@ -49,7 +50,7 @@ public class CuentaServiceImpl {
 
 
     public void cuentaModificar(String numeroCuenta, Sucursal sucursal, Integer id, Integer balance) {
-        Cliente cliente = clienteService.getClientById(id).get();
+        Optional<Client> cliente = clienteService.getClientById(id);
 
 
 

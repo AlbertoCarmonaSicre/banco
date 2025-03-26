@@ -41,12 +41,12 @@ public class Cuenta {
     public Cuenta(String numCuenta, Sucursal sucursal, Optional<Cliente> cliente, Integer balance) {
         this.numCuenta = numCuenta;
         this.sucursal = sucursal;
-        this.cliente = cliente;
+        this.cliente = cliente.get();
         this.balance = balance;
     }
 
 
     public void setCliente(Optional<Cliente> cliente) {
-        this.cliente = cliente;
+        this.cliente = cliente.get();
     }
 }
