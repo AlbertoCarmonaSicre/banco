@@ -47,4 +47,14 @@ public class Sucursal {
     }
 
     public Sucursal(){}
+
+    @Override
+    public String toString() {
+        return "Sucursal{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", director='" + director + '\'' +
+                ", direccion='" + direccion + '\'' +
+                '}';
+    }
 }

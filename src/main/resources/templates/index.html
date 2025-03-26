@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Demo de Spring MVC : Index</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+<body>
+<p>Recibe tu saludo genérico <a href="/testModificado">Aquí</a></p>
+</br>
+<input id="nombre" type="text" placeholder="Escribe tu nombre" />
+<button id="saludar">Saludar con mi nombre</button>
+
+<script>
+    $(document).ready(function() {
+      $("#saludar").click(function() {
+        const nombre = $("#nombre").val();
+        window.location.href = '/test?name=' + nombre + '&surname=apellido';
+      });
+    });
+</script>
+</body>
+</html>
