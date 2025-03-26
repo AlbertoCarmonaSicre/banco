@@ -1,5 +1,7 @@
 package com.babelgroup.banco.models;
 
+import java.util.Optional;
+
 public class Cuenta {
 
     private String numCuenta;
@@ -36,7 +38,7 @@ public class Cuenta {
     }
 
 
-    public Cuenta(String numCuenta, Sucursal sucursal, Cliente cliente, Integer balance) {
+    public Cuenta(String numCuenta, Sucursal sucursal, Optional<Cliente> cliente, Integer balance) {
         this.numCuenta = numCuenta;
         this.sucursal = sucursal;
         this.cliente = cliente;
@@ -44,7 +46,7 @@ public class Cuenta {
     }
 
 
-    public void setCliente(Cliente cliente) {
+    public void setCliente(Optional<Cliente> cliente) {
         this.cliente = cliente;
     }
 }

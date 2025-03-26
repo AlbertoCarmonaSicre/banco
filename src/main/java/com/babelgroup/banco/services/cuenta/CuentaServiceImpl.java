@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,8 +24,9 @@ public class CuentaServiceImpl {
 
         //TODO comprobar que pilla getClientById (comprobar nomenclatura)
         Cliente cliente = clienteService.getClientById(id).get();
+
         // Validar que el cliente existe y pertenece a la sucursal
-        if (cliente == null) {
+        if (cliente.isEmpty()) {
             throw new IllegalArgumentException("Cliente no encontrado con ID: " + id);
         }
 
@@ -48,6 +50,7 @@ public class CuentaServiceImpl {
 
     public void cuentaModificar(String numeroCuenta, Sucursal sucursal, Integer id, Integer balance) {
         Cliente cliente = clienteService.getClientById(id).get();
+
 
 
         // Validar formato del número de cuenta (20 dígitos)
