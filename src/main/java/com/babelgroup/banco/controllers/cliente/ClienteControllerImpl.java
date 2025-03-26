@@ -3,12 +3,14 @@ package com.babelgroup.banco.controllers.cliente;
 import com.babelgroup.banco.models.Cliente;
 import com.babelgroup.banco.models.Sucursal;
 import com.babelgroup.banco.services.cliente.ClienteService;
+import com.babelgroup.banco.services.sucursal.SucursalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Controller
@@ -32,7 +34,7 @@ public class ClienteControllerImpl implements ClienteController{
             @RequestParam String direccionPostal,
             @RequestParam String email,
             @RequestParam String telefono,
-            @RequestParam Sucursal sucursal,
+            @RequestParam String sucursal,
             Model model
     ) {
         clienteService.create(DNI, nombre, direccionPostal, email, telefono, sucursal);
@@ -49,19 +51,29 @@ public class ClienteControllerImpl implements ClienteController{
             @RequestParam String direccionPostal,
             @RequestParam String email,
             @RequestParam String telefono,
-            @RequestParam Sucursal sucursal,
+            @RequestParam String sucursal,
             Model model
     ) {
-        clienteService.update(id, DNI, nombre, direccionPostal, email, telefono, sucursal);
-        model.addAttribute("notificacion", "Cliente actualizado correctamente");
+        try {
+            clienteService.update(id, DNI, nombre, direccionPostal, email, telefono, sucursal);
+            model.addAttribute("notificacion", "Cliente actualizado correctamente");
+        } catch (NoSuchElementException e) {
+            model.addAttribute("error", e.getMessage());
+        }
+
         model.addAttribute("listadoClientes", clienteService.getAllClients());
         return "clientes-vista";
     }
 
     @PostMapping("/eliminar")
     public String eliminarCliente(@RequestParam Integer id, Model model) {
-        clienteService.delete(id);
-        model.addAttribute("notificacion", "Cliente eliminado con ID: " + id);
+        try {
+            clienteService.delete(id);
+            model.addAttribute("notificacion", "Cliente eliminado correctamente");
+        } catch (NoSuchElementException e) {
+            model.addAttribute("error", e.getMessage());
+        }
+
         model.addAttribute("listadoClientes", clienteService.getAllClients());
         return "clientes-vista";
     }

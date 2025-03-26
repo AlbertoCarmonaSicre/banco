@@ -38,7 +38,7 @@ public class Cuenta {
     }
 
 
-    public Cuenta(String numCuenta, Sucursal sucursal, Optional<Cliente> cliente, Integer balance) {
+    public Cuenta(String numCuenta, Sucursal sucursal, Cliente cliente, Integer balance) {
         this.numCuenta = numCuenta;
         this.sucursal = sucursal;
         this.cliente = cliente.get();
@@ -46,7 +46,7 @@ public class Cuenta {
     }
 
 
-    public void setCliente(Optional<Cliente> cliente) {
-        this.cliente = cliente.get();
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 }
