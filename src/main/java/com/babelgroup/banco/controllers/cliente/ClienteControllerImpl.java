@@ -37,8 +37,12 @@ public class ClienteControllerImpl implements ClienteController{
             @RequestParam String sucursal,
             Model model
     ) {
-        clienteService.create(DNI, nombre, direccionPostal, email, telefono, sucursal);
-        model.addAttribute("notificacion", "Cliente creado: " + nombre);
+        try {
+            clienteService.create(DNI, nombre, direccionPostal, email, telefono, sucursal);
+            model.addAttribute("notificacion", "Cliente creado correctamente");
+        } catch (NoSuchElementException e) {
+            model.addAttribute("error", e.getMessage());
+        }
         model.addAttribute("listadoClientes", clienteService.getAllClients());
         return "clientes-vista";
     }

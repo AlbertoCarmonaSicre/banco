@@ -8,6 +8,6 @@ public class HomeController {
 
     @GetMapping("/")
     public String home() {
-        return "index"; // Sin ".html", Spring Boot lo busca en templates
+        return "index";
     }
 }
