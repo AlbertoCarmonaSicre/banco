@@ -38,14 +38,20 @@ public class CuentaServiceImpl {
     }
     */
 
-    public Cuenta cuentaAlta(Sucursal sucursal, Integer id, Integer balance) {
+    public Cuenta cuentaAlta(Integer sucursalId, Integer clienteId, Integer balance) {
 
         //TODO comprobar que pilla getClientById (comprobar nomenclatura)
 
-        Cliente cliente = clienteService.getClientById(id).orElse(null);
+        // Obtener la sucursal por ID
+        Sucursal sucursal = sucursalService.findById(sucursalId);
+        if (sucursal == null) {
+            throw new IllegalArgumentException("Sucursal no encontrada con ID: " + sucursalId);
+        }
+
+        Cliente cliente = clienteService.getClientById(clienteId).orElse(null);
         // Validar que el cliente existe
         if (cliente == null) {
-            throw new IllegalArgumentException("Cliente no encontrado con ID: " + id);
+            throw new IllegalArgumentException("Cliente no encontrado con ID: " + clienteId);
         }
 
         // Crea cuenta con el numeroCuenta actual

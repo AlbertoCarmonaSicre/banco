@@ -6,7 +6,7 @@ import org.springframework.ui.Model;
 
 public interface CuentaController {
 
-    String altaCuenta(Model model, Cuenta cuenta);
+    String altaCuenta(Model model, Integer sucursalId, Integer clienteId, Integer balance);
 
     String modificarCuenta(Model model, String numeroCuenta, Cuenta cuenta);
 

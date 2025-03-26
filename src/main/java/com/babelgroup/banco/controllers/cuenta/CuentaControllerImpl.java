@@ -5,10 +5,7 @@ import com.babelgroup.banco.services.cuenta.CuentaServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/cuentas")
@@ -25,12 +22,15 @@ public class CuentaControllerImpl implements CuentaController {
 
     @Override
     @PostMapping("/alta")
-    public String altaCuenta(Model model, Cuenta cuenta) {
+    public String altaCuenta(Model model,
+                             @RequestParam Integer sucursalId,
+                             @RequestParam Integer clienteId,
+                             @RequestParam Integer balance) {
         try {
             Cuenta nuevaCuenta = cuentaService.cuentaAlta(
-                    cuenta.getSucursal(),
-                    cuenta.getCliente().getId(),
-                    cuenta.getBalance()
+                    sucursalId,
+                    clienteId,
+                    balance
             );
             model.addAttribute("notificacion", "Cuenta creada: " + nuevaCuenta.getNumCuenta());
         } catch (IllegalArgumentException e) {
