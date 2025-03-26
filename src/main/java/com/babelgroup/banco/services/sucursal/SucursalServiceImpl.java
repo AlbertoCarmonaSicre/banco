@@ -58,4 +58,12 @@ public class SucursalServiceImpl implements SucursalService {
             throw new NoSuchElementException("No se encontro la sucursal");
         }
     }
+
+    @Override
+    public Sucursal findById(Integer id) {
+        return sucursales.stream()
+                .filter(s -> s.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("No se encontró la sucursal"));
+    }
 }

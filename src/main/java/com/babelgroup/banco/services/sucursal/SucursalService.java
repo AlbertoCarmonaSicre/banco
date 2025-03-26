@@ -14,4 +14,6 @@ public interface SucursalService {
 
     void delete(Integer id);
 
+    Sucursal findById(Integer id);
+
 }

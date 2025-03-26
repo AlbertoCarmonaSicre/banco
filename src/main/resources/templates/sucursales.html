@@ -26,10 +26,10 @@
             <td th:text="${sucursal.direccion}"></td>
             <td th:text="${sucursal.director}"></td>
             <td>
-                <form th:action="@{/api/sucursales/{id}(id=${sucursal.id}/delete)}" method="post" style="display:inline;">
+                <form th:action="@{/api/sucursales/{id}/delete(id=${sucursal.id})}" method="post" style="display:inline;">
                     <button type="submit" class="btn btn-danger">Eliminar</button>
                 </form>
-                <button class="btn btn-warning" onclick="@{/api/sucursales/${sucursal.id}}">Editar</button>
+                <a th:href="@{/api/sucursales/{id}(id=${sucursal.id})}" class="btn btn-warning">Editar</a>
             </td>
         </tr>
         </tbody>

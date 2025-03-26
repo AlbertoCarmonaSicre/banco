@@ -36,7 +36,7 @@ public class SucursalControllerImpl implements SucursalController{
     }
 
     @Override
-    @PutMapping("/{id}")
+    @PostMapping("/{id}/edit")
     public String update(@PathVariable Integer id, String nombre, String direccion, String director, Model model) {
         Sucursal sucursal = sucursalService.update(new Sucursal(id, nombre, direccion, director));
         List<Sucursal> sucursales = sucursalService.findAll();
@@ -52,5 +52,12 @@ public class SucursalControllerImpl implements SucursalController{
         List<Sucursal> sucursales = sucursalService.findAll();
         model.addAttribute("sucursales", sucursales);
         return "sucursales";
+    }
+
+    @GetMapping("/{id}")
+    public String findById(@PathVariable Integer id, Model model) {
+        Sucursal sucursal = sucursalService.findById(id);
+        model.addAttribute("sucursal", sucursal);
+        return "editarSucursal";
     }
 }
